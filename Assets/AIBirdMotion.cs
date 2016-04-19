@@ -1,0 +1,36 @@
+﻿using UnityEngine;
+using System.Collections;
+
+public class AIBirdMotion : MonoBehaviour {
+	Rigidbody m_thisRigidBody;
+	public float m_birdVelocity;
+	public Transform m_startMarker;
+	public Transform m_endMarker;
+	private float startTime;
+	private float journeyLength;
+
+	// Use this for initialization
+	void Start () {
+		setNewDestination (m_endMarker);
+
+	}
+	public void setNewDestination (Transform i_newDest){
+		if (i_newDest != null) {
+			m_endMarker = i_newDest;
+			startTime = Time.time;
+			journeyLength = Vector3.Distance(transform.position, m_endMarker.position);
+			transform.LookAt (m_endMarker.position,Vector3.up);
+			m_thisRigidBody = GetComponent<Rigidbody> ();
+		
+		}
+	}
+	
+	// Update is called once per frame
+	void Update () {
+	//	m_thisRigidBody.velocity = m_thisRigidBody.velocity.normalized * m_birdVelocity;
+		float distCovered = (Time.time - startTime) * m_birdVelocity;
+		float fracJourney = distCovered / journeyLength;
+		m_thisRigidBody.position = Vector3.Slerp(transform.position, m_endMarker.position, fracJourney);
+
+	}
+}
