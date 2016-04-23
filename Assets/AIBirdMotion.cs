@@ -21,11 +21,9 @@ public class AIBirdMotion : MonoBehaviour {
 			m_endMarker = i_newDest;
 			startTime = Time.time;
 			journeyLength = Vector3.Distance(transform.position, m_endMarker.position);
-
-            transform.LookAt (m_endMarker.position,Vector3.up);
+            if (!isFish)
+                transform.LookAt (m_endMarker.position,Vector3.up);
 			m_thisRigidBody = GetComponent<Rigidbody> ();
-            if (isFish)
-                transform.LookAt(m_endMarker.position, Vector3.right);
 
 
         }
@@ -35,7 +33,12 @@ public class AIBirdMotion : MonoBehaviour {
 	void Update () {
 		float distCovered = (Time.time - startTime) * m_birdVelocity;
 		float fracJourney = distCovered / journeyLength;
+        if(!isFish)
 		m_thisRigidBody.position = Vector3.Slerp(transform.position, m_endMarker.position, fracJourney);
+        else
+        {
+            m_thisRigidBody.position = Vector3.Lerp(transform.position, m_endMarker.position, fracJourney);
+        }
 
 	}
 }
