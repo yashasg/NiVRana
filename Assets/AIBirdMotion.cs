@@ -1,5 +1,6 @@
 ﻿using UnityEngine;
 using System.Collections;
+using System;
 
 public class AIBirdMotion : MonoBehaviour {
 	Rigidbody m_thisRigidBody;
@@ -8,6 +9,7 @@ public class AIBirdMotion : MonoBehaviour {
 	public Transform m_endMarker;
 	private float startTime;
 	private float journeyLength;
+    public bool isFish;
 
 	// Use this for initialization
 	void Start () {
@@ -19,15 +21,18 @@ public class AIBirdMotion : MonoBehaviour {
 			m_endMarker = i_newDest;
 			startTime = Time.time;
 			journeyLength = Vector3.Distance(transform.position, m_endMarker.position);
-			transform.LookAt (m_endMarker.position,Vector3.up);
+
+            transform.LookAt (m_endMarker.position,Vector3.up);
 			m_thisRigidBody = GetComponent<Rigidbody> ();
-		
-		}
+            if (isFish)
+                transform.LookAt(m_endMarker.position, Vector3.right);
+
+
+        }
 	}
 	
 	// Update is called once per frame
 	void Update () {
-	//	m_thisRigidBody.velocity = m_thisRigidBody.velocity.normalized * m_birdVelocity;
 		float distCovered = (Time.time - startTime) * m_birdVelocity;
 		float fracJourney = distCovered / journeyLength;
 		m_thisRigidBody.position = Vector3.Slerp(transform.position, m_endMarker.position, fracJourney);
