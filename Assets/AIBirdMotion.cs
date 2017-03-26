@@ -2,7 +2,7 @@
 using System.Collections;
 using System;
 
-public class AIBirdMotion : MonoBehaviour, ICardboardGazeResponder
+public class AIBirdMotion : MonoBehaviour
 {
 	Rigidbody m_thisRigidBody;
 	public float m_birdVelocity;
@@ -41,14 +41,14 @@ public class AIBirdMotion : MonoBehaviour, ICardboardGazeResponder
             m_thisRigidBody.position = Vector3.Lerp(transform.position, m_endMarker.position, fracJourney);
 
 	}
-    void LateUpdate()
-    {
-        Cardboard.SDK.UpdateState();
-        if (Cardboard.SDK.BackButtonPressed)
-        {
-            Application.Quit();
-        }
-    }
+    //void LateUpdate()
+    //{
+    //    Cardboard.SDK.UpdateState();
+    //    if (Cardboard.SDK.BackButtonPressed)
+    //    {
+    //        Application.Quit();
+    //    }
+    //}
     public float getScore()
     {
         return m_Score;
@@ -60,44 +60,44 @@ public class AIBirdMotion : MonoBehaviour, ICardboardGazeResponder
         GetComponent<Renderer>().material.color = gazedAt ? m_CurrentColor : Color.yellow;
     }
 
- public void ToggleDistortionCorrection()
-    {
-        switch (Cardboard.SDK.DistortionCorrection)
-        {
-            case Cardboard.DistortionCorrectionMethod.Unity:
-                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
-                break;
-            case Cardboard.DistortionCorrectionMethod.Native:
-                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
-                break;
-            case Cardboard.DistortionCorrectionMethod.None:
-            default:
-                Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
-                break;
-        }
-    }
+ //public void ToggleDistortionCorrection()
+ //   {
+ //       switch (Cardboard.SDK.DistortionCorrection)
+ //       {
+ //           case Cardboard.DistortionCorrectionMethod.Unity:
+ //               Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Native;
+ //               break;
+ //           case Cardboard.DistortionCorrectionMethod.Native:
+ //               Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.None;
+ //               break;
+ //           case Cardboard.DistortionCorrectionMethod.None:
+ //           default:
+ //               Cardboard.SDK.DistortionCorrection = Cardboard.DistortionCorrectionMethod.Unity;
+ //               break;
+ //       }
+ //   }
 
-    #region ICardboardGazeResponder implementation
+ //   #region ICardboardGazeResponder implementation
 
-    /// Called when the user is looking on a GameObject with this script,
-    /// as long as it is set to an appropriate layer (see CardboardGaze).
-    public void OnGazeEnter()
-    {
-        SetGazedAt(true);
-    }
+ //   /// Called when the user is looking on a GameObject with this script,
+ //   /// as long as it is set to an appropriate layer (see CardboardGaze).
+ //   public void OnGazeEnter()
+ //   {
+ //       SetGazedAt(true);
+ //   }
 
-    /// Called when the user stops looking on the GameObject, after OnGazeEnter
-    /// was already called.
-    public void OnGazeExit()
-    {
-        SetGazedAt(false);
-    }
+ //   /// Called when the user stops looking on the GameObject, after OnGazeEnter
+ //   /// was already called.
+ //   public void OnGazeExit()
+ //   {
+ //       SetGazedAt(false);
+ //   }
 
-    // Called when the Cardboard trigger is used, between OnGazeEnter
-    /// and OnGazeExit.
-    public void OnGazeTrigger()
-    {
-    }
+ //   // Called when the Cardboard trigger is used, between OnGazeEnter
+ //   /// and OnGazeExit.
+ //   public void OnGazeTrigger()
+ //   {
+ //   }
 
-    #endregion
+ //   #endregion
 }
