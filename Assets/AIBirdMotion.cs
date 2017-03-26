@@ -28,7 +28,6 @@ public class AIBirdMotion : MonoBehaviour, ICardboardGazeResponder
 			m_thisRigidBody = GetComponent<Rigidbody> ();
             if (GetComponent<Renderer>().material.color.Equals(m_CurrentColor))
                 m_Score += 0.5f;
-                Debug.Log(m_Score);
 
 
         }
