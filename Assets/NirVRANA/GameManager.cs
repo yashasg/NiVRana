@@ -5,6 +5,9 @@ public class GameManager : MonoBehaviour {
 
     public GameObject[] children;
 
+    public GameObject displayfish;
+    public GameObject displayBird;
+
     enum eGameStates
     {
         MainMenu=0,
@@ -12,7 +15,14 @@ public class GameManager : MonoBehaviour {
         ShowScore=2,
         ShowFinalScore=3
     };
+    enum eRound
+    {
+        Fish=0,
+        Bird=1,
+        Sun=2
+    }
     private eGameStates currentGameState;
+    private eRound currentRound;
 
 
     void Start()
@@ -26,10 +36,19 @@ public class GameManager : MonoBehaviour {
         {
             case eGameStates.MainMenu:
                 currentGameState = eGameStates.BeginRound;
+                currentRound = eRound.Fish;
                 ToggleChildren(false);
                 break;
             case eGameStates.BeginRound:
                 currentGameState = eGameStates.ShowScore;
+                if (currentRound == eRound.Fish)
+                {
+                    currentRound = eRound.Bird;
+                }
+                else if (currentRound == eRound.Bird)
+                {
+                    currentRound = eRound.Sun;
+                }
                 ToggleChildren(true);
                 break;
             case eGameStates.ShowScore:
@@ -50,9 +69,17 @@ public class GameManager : MonoBehaviour {
 
     private void ToggleChildren(bool isEnabled)
     {
-        foreach(GameObject child in children)
+        foreach (GameObject child in children)
         {
             child.SetActive(isEnabled);
+        }
+        if(currentRound==eRound.Bird)
+        {
+            displayBird.SetActive(isEnabled);
+        }
+        else if (currentRound == eRound.Fish)
+        {
+            displayfish.SetActive(isEnabled);
         }
     }
 
