@@ -12,13 +12,21 @@ public class AIBirdMotion : MonoBehaviour
     private float journeyLength;
     public bool isFish;
     private Color m_CurrentColor = Color.white;
-    private float m_Score = 0;
+    //private float m_Score = 0;
+    private float   m_Score1 = 0;
+    private int     gaze_counter = 0;
+    private int     total_gaze = 0;
+    private int     total_counter = 0;
     public bool isMoving = false;
 
     // Use this for initialization
 
     void Start()
     {
+        m_Score1 = 0;
+        gaze_counter = 0;
+        total_gaze = 0;
+        total_counter = 0;
     }
 
     public void setNewDestination(Transform i_newSource,Transform i_newDest)
@@ -33,8 +41,8 @@ public class AIBirdMotion : MonoBehaviour
             if (!isFish)
                 //transform.LookAt(m_endMarker.position, Vector3.up);
             m_thisRigidBody = GetComponent<Rigidbody>();
-            if (GetComponent<Renderer>().material.color.Equals(m_CurrentColor))
-                m_Score += 0.5f;
+           // if (GetComponent<Renderer>().material.color.Equals(m_CurrentColor))
+                //m_Score += 0.5f;
         }
     }
 
@@ -51,16 +59,33 @@ public class AIBirdMotion : MonoBehaviour
                 isMoving = false;
             }
         }
+        total_counter++;
+        gaze_counter++;
     }
 
-    public float getScore()
+    public int getScore()
     {
-        return m_Score;
+        return (int)m_Score1;
     }
     public void SetGazedAt(bool gazedAt)
     {
         System.Random rand = new System.Random();
         m_CurrentColor = new Color((float)rand.NextDouble(), (float)rand.NextDouble(), (float)rand.NextDouble());
         GetComponent<Renderer>().material.color = gazedAt ? m_CurrentColor : Color.yellow;
+        CalculateScore(gazedAt);
+    }
+
+    private void CalculateScore(bool gazedAt)
+    {
+        if (gazedAt == false)
+        {
+            total_gaze += gaze_counter;
+            m_Score1 = (total_gaze / (float)total_counter) * 100;
+            Debug.Log("Score " + getScore());
+        }
+        else
+        {
+            gaze_counter = 0;
+        }
     }
 }
